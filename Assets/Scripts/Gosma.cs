@@ -17,11 +17,11 @@ public class Gosma : MonoBehaviour
 
     IEnumerator Move(float destino)
     {
-        while (Mathf.Abs(destino - transform.localPosition.y) > 0.2f)
+        while (Mathf.Abs(destino - transform.position.y) > 0.2f)
         {
             Vector3 direcaov = (destino == max) ? Vector3.up : Vector3.down;
-            Vector3 velocidadeVetorial = direcaov * velocidadeh;
-            transform.localPosition = transform.localPosition + velocidadeVetorial * Time.deltaTime;
+            Vector3 velocidadeVetorial = direcaov * velocidadev;
+            transform.position = transform.position + velocidadeVetorial * Time.deltaTime;
 
             yield return null;
 
@@ -37,7 +37,7 @@ public class Gosma : MonoBehaviour
     void Update()
     {
 
-        Vector3 direcaoh = Vector3.left * velocidadev;
+        Vector3 direcaoh = Vector3.left * velocidadeh;
         transform.position = transform.position + direcaoh * Time.deltaTime;
     }
 }
