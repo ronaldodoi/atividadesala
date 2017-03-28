@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         if (GameController.instancia.estado == Estados.jogando)
         {
