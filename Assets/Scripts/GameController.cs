@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour {
     public float espera;
     public float tempoDestruicao;
     public static GameController instancia = null;
+    public GameObject menu;
+    public GameObject canvas;
 
     private void Awake()
     {
@@ -39,12 +41,15 @@ public class GameController : MonoBehaviour {
             yield return new WaitForSeconds(espera);
         }
     }
-    
+
     public void PlayerComecou()
     {
         estado = Estados.jogando;
+        menu.SetActive(false);
+        canvas.SetActive(false);
         StartCoroutine(GerarObstaculos());
     }
+
     public void PlayerMorreu()
     {
         estado = Estados.GameOver;
