@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void Update () {
-        if (GameController.instancia.estado == Estados.jogando || GameController.instancia.estado == Estados.AguardoComecar)
+        if (GameController.instancia.estado == Estados.jogando)
         {
 
 
@@ -31,10 +31,7 @@ public class PlayerController : MonoBehaviour {
                 audioSource.PlayOneShot(somPulo);
                 rb.useGravity = true;
                 pulando = true;
-                if (GameController.instancia.estado == Estados.AguardoComecar)
-                {
-                    GameController.instancia.PlayerComecou();
-                }
+                
             }
         }
     }
