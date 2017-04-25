@@ -9,6 +9,9 @@ public class Gosma : MonoBehaviour
     public float min;
     public float max;
     public float espera;
+    private GameObject player;
+    private bool pontuou = false;
+
 
     void Start()
     {
@@ -39,5 +42,18 @@ public class Gosma : MonoBehaviour
 
         Vector3 direcaoh = Vector3.left * velocidadeh;
         transform.position = transform.position + direcaoh * Time.deltaTime;
+        if (!pontuou && GameController.instancia.estado == Estados.jogando)
+        {
+            if (transform.position.x < player.transform.position.x)
+            {
+                GameController.instancia.incrementarPontos(1);
+                pontuou = true;
+            }
+        }
     }
+    private void Awake()
+    {
+        player = GameObject.Find("micro_zombie");
+    }
+
 }

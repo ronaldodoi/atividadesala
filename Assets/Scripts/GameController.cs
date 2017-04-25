@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
@@ -12,7 +13,10 @@ public class GameController : MonoBehaviour {
     public static GameController instancia = null;
     public GameObject menu;
     public GameObject canvas;
-
+    public GameObject menuCamera;
+    public GameObject menuPanel;
+    private int pontos;
+    public Text txtPontos;
     private void Awake()
     {
         if(instancia == null)
@@ -26,8 +30,7 @@ public class GameController : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
         
     }
-
-        
+            
     void Start () {
         estado = Estados.AguardoComecar;
 	}
@@ -35,18 +38,30 @@ public class GameController : MonoBehaviour {
     {
         while (GameController.instancia.estado == Estados.jogando)  
         {
-            Vector3 pos = new Vector3(4.2f, Random.Range(-1.5f, 0.5f), 1.33f);
-            GameObject obj = Instantiate(obstaculo, pos, Quaternion.identity) as GameObject;
+            Vector3 pos = new Vector3(11f, Random.Range(-1.76f, -5.55f), 0f);
+            GameObject obj = Instantiate(obstaculo, pos, Quaternion.Euler(0f,-90f,0f)) as GameObject;
             Destroy(obj,tempoDestruicao);
             yield return new WaitForSeconds(espera);
         }
     }
 
+    private void atualizarPontos(int x)
+    {
+        pontos = x;
+        txtPontos.text = "" + x;
+    }
+
+    public void incrementarPontos(int x)
+    {
+        atualizarPontos(pontos + x);
+    }
+    
     public void PlayerComecou()
     {
         estado = Estados.jogando;
-        menu.SetActive(false);
-        canvas.SetActive(false);
+        menuCamera.SetActive(false);
+        menuPanel.SetActive(false);
+        atualizarPontos(0);
         StartCoroutine(GerarObstaculos());
     }
 
