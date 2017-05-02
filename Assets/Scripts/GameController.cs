@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
@@ -17,6 +18,13 @@ public class GameController : MonoBehaviour {
     public GameObject menuPanel;
     private int pontos;
     public Text txtPontos;
+    public GameObject gameOverPanel;
+    public GameObject pontosPanel;
+    public Text txtMaiorPontuacao;
+    private List<GameObject> obstaculos;
+
+
+
     private void Awake()
     {
         if(instancia == null)
@@ -32,15 +40,23 @@ public class GameController : MonoBehaviour {
     }
             
     void Start () {
+        obstaculos = new List<GameObject>();
         estado = Estados.AguardoComecar;
-	}
-	IEnumerator GerarObstaculos()
+        PlayerPrefs.SetInt("HighScore", 0);
+        menuCamera.SetActive(true);
+        menuPanel.SetActive(true);
+        gameOverPanel.SetActive(false);
+        pontosPanel.SetActive(false);
+
+    }
+    IEnumerator GerarObstaculos()
     {
         while (GameController.instancia.estado == Estados.jogando)  
         {
             Vector3 pos = new Vector3(11f, Random.Range(-1.76f, -5.55f), 0f);
             GameObject obj = Instantiate(obstaculo, pos, Quaternion.Euler(0f,-90f,0f)) as GameObject;
-            Destroy(obj,tempoDestruicao);
+            obstaculos.Add(obj);
+            StartCoroutine(DestruirObstaculo(obj));
             yield return new WaitForSeconds(espera);
         }
     }
@@ -55,20 +71,54 @@ public class GameController : MonoBehaviour {
     {
         atualizarPontos(pontos + x);
     }
-    
+
+    IEnumerator DestruirObstaculo(GameObject obj) {
+        yield return new WaitForSeconds(tempoDestruicao);
+        if (obstaculos.Remove(obj)) {
+            Destroy(obj);
+        }
+    }
+
+
     public void PlayerComecou()
     {
         estado = Estados.jogando;
         menuCamera.SetActive(false);
         menuPanel.SetActive(false);
+        pontosPanel.SetActive(true);
         atualizarPontos(0);
         StartCoroutine(GerarObstaculos());
     }
 
+    public void PlayerVoltou()
+    {
+        while (obstaculos.Count > 0)
+        {
+            GameObject obj = obstaculos[0];
+            if (obstaculos.Remove(obj))
+            {
+                Destroy(obj);
+            }
+        }
+            estado = Estados.AguardoComecar;
+        menuCamera.SetActive(true);
+        menuPanel.SetActive(true);
+        gameOverPanel.SetActive(false);
+        pontosPanel.SetActive(false);
+        GameObject.Find("micro_zombie").GetComponent<PlayerController>().recomecar();
+    }
+
+
     public void PlayerMorreu()
     {
         estado = Estados.GameOver;
-        
+        if (pontos > PlayerPrefs.GetInt("HighScore"))
+        {
+            PlayerPrefs.SetInt("HighScore", pontos);
+            txtMaiorPontuacao.text = "" + pontos;
+        }
+        gameOverPanel.SetActive(true);
+
     }
     
 }
