@@ -15,7 +15,8 @@ public class Gosma : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(Move(max));
+        float destino = (Random.Range(0f, 1f) < 0.5) ? max : min;
+        StartCoroutine(Move(destino));
     }
 
     IEnumerator Move(float destino)

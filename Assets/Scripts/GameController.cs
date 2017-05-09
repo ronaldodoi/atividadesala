@@ -53,8 +53,8 @@ public class GameController : MonoBehaviour {
     {
         while (GameController.instancia.estado == Estados.jogando)  
         {
-            Vector3 pos = new Vector3(11f, Random.Range(-1.76f, -5.55f), 0f);
-            GameObject obj = Instantiate(obstaculo, pos, Quaternion.Euler(0f,-90f,0f)) as GameObject;
+            Vector3 pos = new Vector3(11f, Random.Range(-2.5f, -4f), 2.05f);
+            GameObject obj = Instantiate(obstaculo, pos, Quaternion.Euler(0f,0f,0f)) as GameObject;
             obstaculos.Add(obj);
             StartCoroutine(DestruirObstaculo(obj));
             yield return new WaitForSeconds(espera);
@@ -100,7 +100,7 @@ public class GameController : MonoBehaviour {
                 Destroy(obj);
             }
         }
-            estado = Estados.AguardoComecar;
+        estado = Estados.AguardoComecar;
         menuCamera.SetActive(true);
         menuPanel.SetActive(true);
         gameOverPanel.SetActive(false);
